@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="name">{{ name }}</h1>
+
+    <script src="./testjs/observertest.js"></script>
+    <script src="./testjs/watchertest.js"></script>
+    <script>
+        
+        function SelfVue(data, el, exp) {
+            let self = this;
+            this.data = data;
+            Object.keys(data).forEach(function (key) {
+                self.proxyKeys(key);
+            });
+            observe(data);
+            el.innerHTML = this.data[exp];
+            new Watcher(this, exp, function (value) {
+                el.innerHTML = value;
+            });
+            return this;
+        }
+        SelfVue.prototype = {
+            proxyKeys: function (key) {
+                var self = this;
+                Object.defineProperty(this, key, {
+                    enumerable: false,
+                    configurable: true,
+                    get: function proxyGetter() {
+                        return self.data[key];
+                    },
+                    set: function proxySetter(newVal) {
+                        self.data[key] = newVal;
+                    }
+                });
+            }
+        };
+
+
+        let ele = document.querySelector('#name');
+        let selfVue = new SelfVue({
+            name: 'Hello World !'
+        },
+            ele,
+            'name');
+        window.setTimeout(() => { 
+            console.log('name值改变了！');
+            selfVue.name = 'canfoo';
+        }, 2000);
+    </script>
+</body>
+
+</html>
