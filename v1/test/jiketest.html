@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // function sleep(duration) {
+        //     return new Promise(function (resolve, reject) {
+        //         setTimeout(resolve, duration);
+        //     });
+        // }
+        // sleep(1000).then(() => console.log("finished"));
+
+        // let r = new Promise(function (resolve, reject) {
+        //     console.log("a");
+        //     resolve();
+        // });
+
+        // r.then(() => { console.log('c') });
+
+        // console.log('b');
+
+        // let r1 = new Promise(function (resolve, reject) {
+        //     console.log('a');
+        //     resolve();
+        // });
+        // setTimeout(() => console.log('d'), 0);
+        // r1.then(() => console.log('c'));
+        // console.log('b');
+
+        // setTimeout(() => console.log('d'), 0);
+        // let r2 = new Promise(function(resolve, reject) {
+        //     resolve();
+        // });
+        // r2.then(()=>{
+        //     let begin = Date.now();
+        //     while(Date.now()-begin < 1000);
+        //     console.log('c1');
+        //     new Promise(function(resolve, reject) {
+        //         resolve();
+        //     }).then(()=>console.log('c2'));
+        // });
+
+        function sleep(duration) {
+            return new Promise(function(resolve, reject) {
+                console.log('b');
+                setTimeout(resolve, duration);
+            });
+        }
+        console.log('a');
+        sleep(5000).then(()=>console.log('c'));
+    </script>
+</body>
+
+</html>
