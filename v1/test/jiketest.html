@@ -48,13 +48,28 @@
         // });
 
         function sleep(duration) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 console.log('b');
                 setTimeout(resolve, duration);
             });
         }
         console.log('a');
-        sleep(5000).then(()=>console.log('c'));
+        sleep(5000).then(() => console.log('c'));
+
+        for (var i = 0; i < 1000; i++) {
+            if (i = 999) {
+                console.log('finished');
+            }
+        }
+
+        console.log(i);
+
+        for (let j = 0; j < 1000; j++) {
+            if (j = 999) {
+                console.log('finished');
+            }
+        }
+        console.log(j);
     </script>
 </body>
 
