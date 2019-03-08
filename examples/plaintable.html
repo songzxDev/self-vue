@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Plain Table</title>
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/uikit/2.25.0/css/uikit.css" />
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/uikit/2.25.0/js/uikit.js"></script>
+</head>
+
+<body>
+    <table id="userList" class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
+        <thead>
+            <tr style="background-color: rgba(122, 118, 118, 0.37);">
+                <th>ID</th>
+                <th>用户名</th>
+                <th>积分</th>
+                <th>性别</th>
+                <th>评分</th>
+                <th>城市</th>
+                <th>签名</th>
+                <th>职业</th>
+                <th>财富</th>
+                <th>得分</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+
+    <script>
+        $.get('/data/user.json').done(function (data) {
+            let userList = data.data;
+            let childNodes = '';
+            for (let item of userList) {
+                childNodes = childNodes.concat(`<tr>
+                        <td>${item.id}</td>
+                        <td>${item.username}</td>
+                        <td>${item.sex}</td>
+                        <td>${item.city}</td>
+                        <td>${item.sign}</td>
+                        <td>${item.experience}</td>
+                        <td>${item.logins}</td>
+                        <td>${item.wealth}</td>
+                        <td>${item.classify}</td>
+                        <td>${item.score}</td>
+                    </tr>`);
+            }
+            $('#userList tbody').html(childNodes);
+        });
+    </script>
+</body>
+
+</html>
