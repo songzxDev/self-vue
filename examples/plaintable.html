@@ -7,16 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Plain Table</title>
 
-    <link rel="stylesheet" href="//cdn.bootcss.com/uikit/2.25.0/css/uikit.css" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/uikit/2.25.0/css/uikit.css"/>
+    <link rel="stylesheet" href="../plugins/iview-2.14.3/styles/iview.css">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/uikit/2.25.0/js/uikit.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+    <script src="../plugins/iview-2.14.3/iview.min.js"></script>
 </head>
 
 <body>
-    <div id="app">
-        <table id="userList" class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
-            <thead>
+<div id="app">
+    <Tabs type="card">
+        <Tab-Pane label="标签一">
+            <table class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
+                <thead>
                 <tr style="background-color: rgba(122, 118, 118, 0.37);">
                     <th><input type="checkbox" v-model="isCheckAll" @change="handleCheckAllChange"></th>
                     <th>ID</th>
@@ -30,10 +34,10 @@
                     <th>财富</th>
                     <th>得分</th>
                 </tr>
-            </thead>
-            <tbody v-for="(item, index) in userList" :key="item.id">
+                </thead>
+                <tbody v-for="(item, index) in userList" :key="item.id">
                 <tr>
-                    <td><input type="checkbox" v-model="item.isCheck"></td>
+                    <td><input type="checkbox" v-model="item.isCheck" @change="handleSingleChange(item.id)"></td>
                     <td>{{ item.id}}</td>
                     <td>{{item.username}}</td>
                     <td>{{item.sex}}</td>
@@ -45,45 +49,118 @@
                     <td>{{item.classify}}</td>
                     <td>{{item.score}}</td>
                 </tr>
-            </tbody>
-            <tfoot></tfoot>
-        </table>
-    </div>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </Tab-Pane>
+        <Tab-Pane label="标签二">
+            <table class="uk-table uk-table-hover uk-table-striped uk-table-condensed">
+                <thead>
+                <tr style="background-color: rgba(122, 118, 118, 0.37);">
+                    <th></th>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>积分</th>
+                    <th>性别</th>
+                    <th>评分</th>
+                    <th>城市</th>
+                    <th>签名</th>
+                    <th>职业</th>
+                    <th>财富</th>
+                    <th>得分</th>
+                </tr>
+                </thead>
+                <tbody v-for="(item, index) in userListChecked" :key="item.id">
+                <tr>
+                    <td><input type="checkbox" v-model="item.isCheck" @change="handleSingleCheckedChange(item.id)"></td>
+                    <td>{{ item.id}}</td>
+                    <td>{{item.username}}</td>
+                    <td>{{item.sex}}</td>
+                    <td>{{item.city}}</td>
+                    <td>{{item.sign}}</td>
+                    <td>{{item.experience}}</td>
+                    <td>{{item.logins}}</td>
+                    <td>{{item.wealth}}</td>
+                    <td>{{item.classify}}</td>
+                    <td>{{item.score}}</td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </Tab-Pane>
+    </Tabs>
+
+</div>
 
 
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                userList: [],
-                isCheckAll: false
-            },
-            methods: {
-                handleCheckAllChange: function () {
-                    let that = this;
-                    if (that.isCheckAll) {
-                        that.userList = that.userList.map((item) => { item.isCheck = true; return item; });
-                    } else {
-                        that.userList = that.userList.map((item) => { item.isCheck = false; return item; });
-                    }
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            userList: [],
+            isCheckAll: false,
+            userListChecked: []
+        },
+        methods: {
+            handleCheckAllChange: function () {
+                let that = this;
+                if (that.isCheckAll) {
+                    that.userList = that.userList.map((item) => {
+                        item.isCheck = true;
+                        that.handleSingleChange(item.id);
+                        return item;
+                    });
+                } else {
+                    that.userList = that.userList.map((item) => {
+                        item.isCheck = false;
+                        that.handleSingleChange(item.id);
+                        return item;
+                    });
                 }
             },
-            mounted: function () {
+            handleSingleChange: function (itemId) {
                 let that = this;
-                $.get('/data/user.json').done(function (data) {
-                    let tempList = data.data || [];
-                    tempList = tempList.map((item) => { item.isCheck = false; return item; });
-                    that.userList = tempList;
-                }).done(function () {
-                    setTimeout(() => {
-                        that.isCheckAll = true;
-                        that.userList[5].isCheck = true;
-                    }, 5000);
-                });
-            }
-        });
+                if (itemId) {
+                    let currItem = that.userList.find(item => item.id === itemId);
+                    if (currItem.isCheck) {
+                        that.userListChecked.push(currItem);
+                    } else {
+                        that.userListChecked.splice(that.userListChecked.findIndex(item => item.id === itemId), 1);
+                    }
 
-    </script>
+                }
+            },
+            handleSingleCheckedChange: function (itemId) {
+                let that = this;
+                if (itemId) {
+                    let currItem = that.userListChecked.find(item => item.id === itemId);
+                    if (!currItem.isCheck) {
+                        that.userListChecked.splice(that.userListChecked.findIndex(item => item.id === itemId), 1);
+                        that.userList.find(item => item.id === itemId).isCheck = false;
+                    }
+
+                }
+            }
+        },
+        mounted: function () {
+            let that = this;
+            $.get('/data/user.json').done(function (data) {
+                let tempList = data.data || [];
+                tempList = tempList.map((item) => {
+                    item.isCheck = false;
+                    return item;
+                });
+                that.userList = tempList;
+            }).done(function () {
+                setTimeout(() => {
+                    that.isCheckAll = true;
+                    that.handleCheckAllChange();
+                }, 5000);
+            });
+        }
+    });
+
+</script>
 </body>
 
 </html>
