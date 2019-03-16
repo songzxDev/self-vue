@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../plugins/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="../plugins/iview-2.14.3/styles/iview.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+    <script src="../plugins/iview-2.14.3/iview.min.js"></script>
+</head>
+<body>
+<div id="example">
+    <i-table :columns="userColumns" :data="userData" size="small"></i-table>
+    <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+            <Page :total="total" :current="currPage" :page-size="pageSize" :page-size-opts="pageSizeOpts"
+                  @on-change="handleChangePage"
+                  @on-page-size-change="handlePageSizeChange"
+                  show-sizer show-total transfer size="small"></Page>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    new Vue({
+        el: '#example',
+        data: {
+            userColumns: [
+                {"key": "id", "title": "id"},
+                {"key": "username", "title": "username"},
+                {"key": "sex", "title": "sex"},
+                {"key": "city", "title": "city"},
+                {"key": "sign", "title": "sign"},
+                {"key": "experience", "title": "experience"},
+                {"key": "logins", "title": "logins"},
+                {"key": "wealth", "title": "wealth"},
+                {"key": "classify", "title": "classify"},
+                {"key": "score", "title": "score"}
+            ],
+            userData: [],
+            currPage: 1,
+            total: 0,
+            pageSize: 9,
+            pageSizeOpts: [9, 18, 27, 36]
+        },
+        methods: {
+            handleChangePage: function (pageNum) {
+                this.currPage = pageNum;
+                let tempList = JSON.parse(sessionStorage.getItem('pageList')); // 存入一个值
+                this.userData = tempList[this.currPage - 1];
+            },
+            handlePageSizeChange: function (pageSize) {
+                let that = this;
+                that.pageSize = pageSize;
+                $.get('/data/user.json').done(function (data) {
+                    let total = data.data.length;
+                    let rows = that.pageSize;
+                    let pageNum = Math.ceil(total / rows);
+                    console.log(`所需页数为：${pageNum}`);
+                    let pageList = [];
+
+                    for (let i = 0; i < pageNum; i++) {
+                        pageList.push(data.data.slice(i * rows, (i * rows) + rows));
+                    }
+                    sessionStorage.setItem('pageList', JSON.stringify(pageList)); // 存入一个值
+                    that.total = total;
+                    that.currPage = 1;
+                    that.userData = pageList[that.currPage - 1];
+
+                });
+            }
+        },
+        mounted: function () {
+            let that = this;
+            $.get('/data/user.json').done(function (data) {
+                let total = data.data.length;
+                let rows = that.pageSize;
+                let pageNum = Math.ceil(total / rows);
+                console.log(`所需页数为：${pageNum}`);
+                let pageList = [];
+
+                for (let i = 0; i < pageNum; i++) {
+                    pageList.push(data.data.slice(i * rows, (i * rows) + rows));
+                }
+                sessionStorage.setItem('pageList', JSON.stringify(pageList)); // 存入一个值
+                that.userData = pageList[that.currPage - 1];
+                that.total = total;
+            });
+        }
+    });
+
+
+</script>
+</body>
+</html>
