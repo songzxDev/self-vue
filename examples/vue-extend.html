@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue-extend</title>
+    <!-- include Vue 2.x -->
+    <script src="../plugins/vue.min.js"></script>
+    <link rel="stylesheet" href="../plugins/iview-2.14.3/styles/iview.css">
+    <style>
+        .my-input {
+            border: 1px solid #ccc;
+            padding: 7px 0px;
+            border-radius: 3px;
+            padding-left: 5px;
+            width: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="extend">
+        <div style="margin: 50px;">
+            <my-input></my-input>
+
+            <my-input-2 v-model="value2"></my-input>
+        </div>
+
+    </div>
+
+    <script>
+        let myTestProfile = Vue.extend({
+            data: function () {
+                return {
+                    value: ''
+                };
+            },
+            template: `
+                <input v-model="value" type="text" placeholder="请输入信息" class="my-input" autofocus="autofocus">
+            `,
+        });
+
+        let myTestProfile2 = Vue.extend({
+            props: ['value2'],
+            template: `
+                <input :value="value2" @input="$emit('input', $event.target.value)" type="text" placeholder="请输入信息" class="my-input" autofocus="autofocus">
+            `,
+        });
+
+
+        Vue.component('my-input', myTestProfile);
+        Vue.component('my-input-2', myTestProfile2);
+        let extend = new Vue({
+            el: '#extend',
+            data: {
+                value2: 'abc'
+            },
+
+        });
+    </script>
+</body>
+
+</html>

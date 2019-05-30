@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../plugins/clusterize/clusterize.css">
+    <script type="text/javascript" src="../plugins/clusterize/clusterize.js"></script>
+</head>
+
+<body>
+    <div class="clusterize">
+        <div class="clusterize-headers">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Headers</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="scrollArea" class="clusterize-scroll" style="max-height: 600px;">
+            <table>
+                <tbody id="contentArea" class="clusterize-content" >
+                    <tr class="clusterize-no-data">
+                        <td>Loading data…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var data = ['<tr class="clusterize-extra-row clusterize-keep-parity">top</tr>',];
+        for (let i = 0; i < 1000000; i++) {
+            data.push('<tr class="clusterize-extra-row clusterize-top-space">mock</tr>');
+        }
+        data.push('<tr class="clusterize-extra-row clusterize-bottom-space">bottom</tr>');
+        var clust = new Clusterize({
+            rows: data,
+            scrollId: 'scrollArea',
+            contentId: 'contentArea'
+        });
+    </script>
+</body>
+
+</html>
