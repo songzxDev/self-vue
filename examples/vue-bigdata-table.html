@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../plugins/vue.min.js"></script>
+    <script src="../plugins/vue-elementui-bigdata-table.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <el-bigdata-table :data="tableData">
+            <el-table-column prop="date" label="日期" sortable width="180">
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" sortable width="180">
+            </el-table-column>
+            <el-table-column prop="address" label="地址" :formatter="formatter">
+            </el-table-column>
+        </el-bigdata-table>
+    </div>
+    <script>
+        Vue.use(ElBigdataTable);
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                columns: [],
+                tableData: [{
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1517 弄'
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1519 弄'
+                }, {
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1516 弄'
+                }]
+
+            },
+            methods: {
+                changeData: function (rowLen) {
+                    let dataArr = [];
+                    for (let i = 0; i < rowLen; i++) {
+                        let arr = [
+                            i + '00',
+                            'count' + i,
+                            '23.4534534345',
+                            '0023' + i,
+                            '123.234534534534',
+                            'namenasdfsdfsdfsdfssdfsdfsdsdfsdfsf' + i,
+                            '2014年1月1日'
+                        ];
+                        dataArr.push(arr);
+                    }
+                    this.tableDataHandled = dataArr;
+                },
+                formatter(row, column) {
+                    return row.address;
+                }
+            },
+            mounted: function () {
+                this.changeData(100);
+                let headers = ['这是数字', '这是字符1列', '这是纬度', '这是数字', '这是经度', '这是字符2列', '这是时间'];
+                let columns = headers.map((title, col) => {
+                    return {
+                        title: title,
+                        // render: (h, col) => {
+                        // 	return h('div', {
+                        // 		'class': [
+                        // 			'header-title-wraper'
+                        // 		],
+                        // 		on: {
+                        // 			click: () => {
+                        // 				console.log(col)
+                        // 			}
+                        // 		}
+                        // 	}, [
+                        // 		h('div', {
+                        // 			'class': [
+                        // 				'mark-con'
+                        // 			]
+                        // 		}, wordsArr[col]),
+                        // 		h('div', {
+                        // 			'class': [
+                        // 				'title-con'
+                        // 			]
+                        // 		}, [])
+                        // 	]);
+                        // },
+                        align: 'center'
+                    };
+                });
+                // console.timeEnd('getColumns');
+                this.columns = columns;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

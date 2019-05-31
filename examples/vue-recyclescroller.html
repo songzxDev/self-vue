@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../plugins/vue-virtual-scroller.css">
+    <style scoped>
+        .scroller {
+            height: 100%;
+        }
+
+        .user {
+            height: 32%;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <DynamicScroller :items="items" :min-item-size="54" class="scroller" ref="abc">
+                <template v-slot="{ item, index, active }">
+                    <DynamicScrollerItem :item="item" :active="active" :size-dependencies="[
+                      item.message,
+                    ]" :data-index="index">
+                        <div class="avatar">
+                            <img :src="item.avatar" :key="item.avatar" alt="avatar" class="image">
+                        </div>
+                        <div class="text">{{ item.message }}</div>
+                    </DynamicScrollerItem>
+                </template>
+            </DynamicScroller>
+        </template>
+    </div>
+
+    <script src="../plugins/vue.min.js"></script>
+    <script src="../plugins/vue-virtual-scroller.min.js"></script>
+    <script>
+        // Vue.use(VueVirtualScroller);
+        Vue.component('RecycleScroller', VueVirtualScroller.DynamicScroller);
+        let app = new Vue({
+            el: '#app',
+            data: {
+                items: [{ message: 123 }],
+            }
+        });
+    </script>
+</body>
+
+</html>

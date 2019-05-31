@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../plugins/vue.min.js"></script>
+    <script src="../plugins/vue-virtual-scroll-list.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <template>
+            <div>
+                <virtual-list :size="40" :remain="8" ref="virtualList" style="height: 500px;">
+                    <ul v-for="item in items" >
+                        <li v-text="item.id"></li>
+                    </ul>
+                </virtual-list>
+            </div>
+        </template>
+    </div>
+    <script>
+        Vue.component('virtual-list', VirtualList);
+        let app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    items: [{ id: 1 }, { id: 2 }, { id: 3 }],
+                }
+            },
+            mounted: function () {
+                for (let i = 3; i < 10000; i++) {
+                    this.items.push({ id: ++i });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
