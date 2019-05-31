@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../plugins/iview-2.14.3/styles/iview.css">
+    <script src="../plugins/vue.min.js"></script>
+    <script src="../plugins/iview-2.14.3/iview.min.js"></script>
+    <script src="../plugins/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="text/x-template" id="appTemplate" >
+    <div>
+        <i-form :label-width="15" inline>
+            <form-item label-for="1" label="1" >
+                <Cascader  element-id="1" :data="data"></Cascader>
+            </form-item>
+            <form-item label-for="2" label="2" >
+                <Cascader element-id="2" :data="data"></Cascader>
+            </form-item>
+            <form-item label-for="3" label="3">
+                <Cascader element-id="3" :data="data"></Cascader>
+            </form-item>
+            <form-item label-for="4" label="4">
+                <Cascader element-id="4" :data="data"></Cascader>
+            </form-item>
+            <form-item>
+                <Cascader :data="data"></Cascader>
+            </form-item>
+            <form-item>
+                <Cascader :data="data"></Cascader>
+            </form-item>
+            <form-item>
+                <Cascader :data="data"></Cascader>
+            </form-item>
+        </i-form>
+    </div>
+
+</script>
+<script type="text/x-template" id="template">
+    <div>
+
+    </div>
+</script>
+
+
+<script type="text/javascript">
+    let TemplateProfile = Vue.extend({
+        template: '#template',
+        data: function () {
+            return {
+                value1: [],
+                data: [{
+                    value: 'beijing',
+                    label: '北京',
+                    children: [
+                        {
+                            value: 'gugong',
+                            label: '故宫'
+                        },
+                        {
+                            value: 'tiantan',
+                            label: '天坛'
+                        },
+                        {
+                            value: 'wangfujing',
+                            label: '王府井'
+                        }
+                    ]
+                }, {
+                    value: 'jiangsu',
+                    label: '江苏',
+                    children: [
+                        {
+                            value: 'nanjing',
+                            label: '南京',
+                            children: [
+                                {
+                                    value: 'fuzimiao',
+                                    label: '夫子庙',
+                                }
+                            ]
+                        },
+                        {
+                            value: 'suzhou',
+                            label: '苏州',
+                            children: [
+                                {
+                                    value: 'zhuozhengyuan',
+                                    label: '拙政园',
+                                },
+                                {
+                                    value: 'shizilin',
+                                    label: '狮子林',
+                                }
+                            ]
+                        }
+                    ],
+                }]
+            };
+        }
+    });
+
+    let AppProfile = Vue.extend({
+        template: '#appTemplate',
+        data: function () {
+            return {
+                data: [{
+                    value: 'beijing',
+                    label: '北京',
+                    children: [
+                        {
+                            value: 'gugong',
+                            label: '故宫'
+                        },
+                        {
+                            value: 'tiantan',
+                            label: '天坛'
+                        },
+                        {
+                            value: 'wangfujing',
+                            label: '王府井'
+                        }
+                    ]
+                }, {
+                    value: 'jiangsu',
+                    label: '江苏',
+                    children: [
+                        {
+                            value: 'nanjing',
+                            label: '南京',
+                            children: [
+                                {
+                                    value: 'fuzimiao',
+                                    label: '夫子庙',
+                                }
+                            ]
+                        },
+                        {
+                            value: 'suzhou',
+                            label: '苏州',
+                            children: [
+                                {
+                                    value: 'zhuozhengyuan',
+                                    label: '拙政园',
+                                },
+                                {
+                                    value: 'shizilin',
+                                    label: '狮子林',
+                                }
+                            ]
+                        }
+                    ],
+                }]
+            }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                for (let node of document.querySelectorAll('p[title="app"]')) {
+                    node.appendChild(new TemplateProfile().$mount().$el);
+                }
+            });
+
+        }
+    });
+
+    let appProfile = new AppProfile().$mount();
+    document.getElementById('app').appendChild(appProfile.$el);
+
+</script>
+</body>
+</html>
